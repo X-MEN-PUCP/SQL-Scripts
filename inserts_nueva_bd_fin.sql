@@ -20,7 +20,7 @@ INSERT INTO `universidad`.`usuario` (`tipo_documento`, `nro_documento`, `contras
 ('DNI', '56789012', 'GpHRQZxCR+4=', 'Pedro', 'Sánchez', 'Gómez', '1990-02-15', 'pedro.sanchez@gmail.com', '987654325', 'MASCULINO', 1, 1, 'activo', 1, NOW()),
 ('DNI', '67890123', '7DxMhtDbqzo=', 'Laura', 'Gómez', 'Pérez', '1992-09-20', 'laura.gomez@gmail.com', '987654326', 'FEMENINO', 1, 1, 'activo', 1, NOW()),
 ('DNI', '78901234', 'ygS+/h13M58=', 'Miguel', 'Díaz', 'López', '1988-12-05', 'miguel.diaz@gmail.com', '987654327', 'MASCULINO', 1, 1, 'activo', 1, NOW()),
-('CE', 'X1234567', 'jDI1gFMevJ4=', 'Sofía', 'Fernández', 'Martínez', '1995-04-18', 'sofia.fernandez@gmail.com', '987654328', 'FEMENINO', 1, 1, 'activo', 1, NOW());
+('CE', 'X12345671', 'jDI1gFMevJ4=', 'Sofía', 'Fernández', 'Martínez', '1995-04-18', 'sofia.fernandez@gmail.com', '987654328', 'FEMENINO', 1, 1, 'activo', 1, NOW());
 
 -- Asignar roles (1=Admin, 2=Médico, 3=Paciente)
 INSERT INTO `universidad`.`usuario_por_rol` (`id_usuario`, `id_rol`, `estado`, `usuario_creación`, `fecha_creacion`) VALUES 
