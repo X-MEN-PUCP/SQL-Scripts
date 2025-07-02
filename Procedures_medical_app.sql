@@ -206,8 +206,9 @@ DROP PROCEDURE IF EXISTS universidad.sp_listar_examenes_por_cita_completo;
 DELIMITER $$
 
 CREATE PROCEDURE universidad.sp_listar_examenes_por_cita_completo(
-    IN p_id_cita INT,
-    IN p_id_examen INT
+    IN p_id_examen INT,
+    IN p_id_cita INT
+    
 )
 BEGIN
   SELECT
