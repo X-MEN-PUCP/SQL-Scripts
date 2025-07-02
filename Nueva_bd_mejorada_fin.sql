@@ -112,8 +112,6 @@ CREATE TABLE IF NOT EXISTS `universidad`.`cita` (
   `fecha_creacion` DATETIME NULL DEFAULT NULL,
   `usuario_modificación` INT NULL DEFAULT NULL,
   `fecha_modificacion` DATETIME NULL DEFAULT NULL,
-  `codigo_verificacion` INT NULL DEFAULT NULL,
-  `fecha_expiracion_codigo` DATETIME NULL DEFAULT NULL,
   PRIMARY KEY (`id_cita`),
   INDEX `id_medico` (`id_medico` ASC) VISIBLE,
   INDEX `id_turno` (`id_turno` ASC) VISIBLE,

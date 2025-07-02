@@ -985,5 +985,91 @@ END$$
 
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS universidad.sp_insertar_citas_recurrentes;
 
+DELIMITER $$
+
+
+CREATE PROCEDURE universidad.sp_insertar_citas_recurrentes (
+    IN p_id_medico INT,
+    IN p_id_especialidad INT,
+    IN p_id_turno INT,
+    IN p_id_consultorio INT,
+    IN p_fecha_inicio DATE,
+    IN p_hora_inicio TIME,
+    IN p_hora_fin TIME,
+    IN p_repeticiones INT,
+    IN p_intervalo_dias INT,
+    IN p_usuario_creacion INT
+)
+BEGIN
+    DECLARE i INT DEFAULT 0;
+    DECLARE fecha_actual DATE;
+
+    -- Crear tabla temporal para citas no insertadas
+    CREATE TEMPORARY TABLE IF NOT EXISTS citas_no_insertadas (
+        fecha DATE,
+        hora_inicio TIME,
+        hora_fin TIME,
+        motivo VARCHAR(100)
+    );
+
+    SET fecha_actual = p_fecha_inicio;
+
+    WHILE i < p_repeticiones DO
+
+        -- Verificamos si ya existe una cita para ese consultorio, fecha y rango horario
+        IF NOT EXISTS (
+            SELECT 1 FROM cita
+            WHERE id_consultorio = p_id_consultorio
+              AND fecha_cita = fecha_actual
+              AND estado_cita = 1
+              AND (
+                    (hora_inicio < p_hora_fin AND hora_fin > p_hora_inicio)
+                  )
+        ) THEN
+            -- Insertamos la cita
+            INSERT INTO cita (
+                id_medico,
+                id_especialidad,
+                id_turno,
+                id_consultorio,
+                hora_inicio,
+                hora_fin,
+                fecha_cita,
+                estado_cita,
+                usuario_creación,
+                fecha_creacion
+            )
+            VALUES (
+                p_id_medico,
+                p_id_especialidad,
+                p_id_turno,
+                p_id_consultorio,
+                p_hora_inicio,
+                p_hora_fin,
+                fecha_actual,
+                1,
+                p_usuario_creacion,
+                NOW()
+            );
+        ELSE
+            -- Registramos en la tabla temporal si hubo conflicto
+            INSERT INTO citas_no_insertadas (fecha, hora_inicio, hora_fin, motivo)
+            VALUES (fecha_actual, p_hora_inicio, p_hora_fin, 'Conflicto: consultorio ocupado');
+        END IF;
+
+        -- Avanzamos a la siguiente fecha
+        SET fecha_actual = DATE_ADD(fecha_actual, INTERVAL p_intervalo_dias DAY);
+        SET i = i + 1;
+    END WHILE;
+
+    -- Devolvemos las citas que no se pudieron insertar
+    SELECT * FROM citas_no_insertadas;
+
+    -- Limpiar tabla temporal al final
+    DROP TEMPORARY TABLE IF EXISTS citas_no_insertadas;
+END$$
+
+DELIMITER ;
 
