@@ -803,7 +803,9 @@ BEGIN
         u.usuario_creacion,
         u.fecha_creacion,
         u.usuario_modificacion,
-        u.fecha_modificacion
+        u.fecha_modificacion,
+        NULL AS codigo_verificacion,
+        NULL AS fecha_expiracion_codigo
     FROM usuario u
     INNER JOIN usuario_por_rol upr ON u.id_usuario = upr.id_usuario
     INNER JOIN rol r ON upr.id_rol = r.id_rol
